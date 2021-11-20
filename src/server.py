@@ -1,13 +1,23 @@
 from mesa.visualization.modules import CanvasGrid
 from mesa.visualization.ModularVisualization import ModularServer
+from mesa.visualization.UserParam import UserSettableParameter
+
 
 from .portrayal import portrayCell
 from .model import ConwaysGameOfLife
 
 
+CANVAS_WIDTH = 600
+CANVAS_HEIGHT = 600
+
 # Make a world that is 50x50, on a 250x250 display.
-canvas_element = CanvasGrid(portrayCell, 50, 50, 250, 250)
+canvas_element = CanvasGrid(portrayCell, 50, 50, CANVAS_WIDTH, CANVAS_HEIGHT)
+
+model_params = {
+    "height": UserSettableParameter("slider", "Grid height", 50, 1, 100),
+    "width": UserSettableParameter("slider", "Grid width", 50, 1, 100,),
+}
 
 server = ModularServer(
-    ConwaysGameOfLife, [canvas_element], "Game of Life", {"height": 50, "width": 50}
+    ConwaysGameOfLife, [canvas_element], "Game of Life", model_params
 )
