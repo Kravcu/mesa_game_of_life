@@ -7,7 +7,7 @@ class Cell(Agent):
     DEAD = 0
     ALIVE = 1
 
-    def __init__(self, pos, model, init_state=DEAD):
+    def __init__(self, pos, model, rules, init_state=DEAD):
         """
         Create a cell, in the given state, at the given x, y position.
         """
@@ -15,6 +15,7 @@ class Cell(Agent):
         self.x, self.y = pos
         self.state = init_state
         self._nextState = None
+        self.to_stay_alive, self.to_become_alive = [[int(num) for num in list(rule)] for rule in rules.split('/')]
 
     @property
     def isAlive(self):
@@ -40,10 +41,10 @@ class Cell(Agent):
         # Assume nextState is unchanged, unless changed below.
         self._nextState = self.state
         if self.isAlive:
-            if live_neighbors < 2 or live_neighbors > 3:
+            if live_neighbors not in self.to_stay_alive:
                 self._nextState = self.DEAD
         else:
-            if live_neighbors == 3:
+            if live_neighbors in self.to_become_alive:
                 self._nextState = self.ALIVE
 
     def advance(self):

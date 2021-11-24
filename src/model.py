@@ -11,7 +11,7 @@ class ConwaysGameOfLife(Model):
     Game of Life.
     """
 
-    def __init__(self, height=50, width=50):
+    def __init__(self, height=50, width=50, rules='23/3'):
         """
         Create a new playing area of (height, width) cells.
         """
@@ -30,7 +30,7 @@ class ConwaysGameOfLife(Model):
         # Place a cell at each location, with some initialized to
         # ALIVE and some to DEAD.
         for (contents, x, y) in self.grid.coord_iter():
-            cell = Cell((x, y), self)
+            cell = Cell((x, y), self, rules)
             if self.random.random() < 0.1:
                 cell.state = cell.ALIVE
             self.grid.place_agent(cell, (x, y))
